@@ -1,15 +1,16 @@
-<h2 class="sticky-title">
+<p class="{{titleClass}}">
   {{title}}
-</h2>
-<p class="sticky-intro">
+</p>
+
+<p class="{{introClass}}">
   {{intro}}
 </p>
 
 {{#if currentListTours}}
-  <ul class="sticky-list-container">
+  <ul class="{{ulClass}}">
 
     {{#each tour in currentListTours}}
-      <li class="sticky-list" {{action 'setTour' tour}}>
+      <li class="{{liClass}}" {{action 'setTour' tour}}>
         {{tour}}
       </li>
     {{/each}}

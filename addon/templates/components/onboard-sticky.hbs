@@ -1,6 +1,6 @@
 <div class="sticky-wrapper">
 
-  <div {{bind-attr class=":sticky-pane isOpen::hidden"}}>
+  <div {{bind-attr class=":sticky-pane isOpen::sticky-hidden"}}>
 
     <button class="sticky-close" {{action 'toggleOpen'}}>
       ×
@@ -12,7 +12,7 @@
 
 </div>
 
-<div {{bind-attr class=":sticky-button-wrapper isOpen:hidden"}}>
+<div {{bind-attr class=":sticky-button-wrapper isOpen:sticky-hidden"}}>
   <div class="sticky-button" {{action 'toggleOpen'}}>
   </div>
 </div>

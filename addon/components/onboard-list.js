@@ -11,6 +11,11 @@ export default Ember.Component.extend({
   intro: 'choose the tour',
   textForNullList: 'no tour here',
 
+  titleClass: '',
+  introClass: '',
+  ulClass: '',
+  liClass: '',
+
   onboard: Ember.inject.service(),
   defaultList: Ember.computed.alias('onboard.defaultList'),
   currentList: Ember.computed.alias('onboard.currentList'),
