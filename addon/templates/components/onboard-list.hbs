@@ -1,0 +1,22 @@
+<h2 class="sticky-title">
+  {{title}}
+</h2>
+<p class="sticky-intro">
+  {{intro}}
+</p>
+
+{{#if currentListTours}}
+  <ul class="sticky-list-container">
+
+    {{#each tour in currentListTours}}
+      <li class="sticky-list" {{action 'setTour' tour}}>
+        {{tour}}
+      </li>
+    {{/each}}
+
+  </ul>
+{{else}}
+  {{textForNullList}}
+{{/if}}
+
+{{yield}}

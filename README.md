@@ -1,118 +1,132 @@
 # Ember-onboarding
 
-This is another Ember wrapper for the [Shepherd](https://github.com/HubSpot/Shepherd), site tour, library.
-But, why another? Because I need 
+This is another Ember wrapper for the [shepherd](https://github.com/HubSpot/Shepherd), site tour, library.
+But, why another? Because I need a tour addon based on same premises:
+* It will be plugged into a (almost) finished project
+* It can't mess up with my beautiful, organised, and fully working code (again, almost!)
+* I don't need all the options that the [library](https://github.com/HubSpot/Shepherd) gives me, so the addon can be more simple, opinated.
 
-## Demo
-[![Guide your users through a tour of your app](http://i.imgur.com/yOw7GrM.png)](http://rwwagner90.github.io/ember-shepherd/)
-http://rwwagner90.github.io/ember-shepherd/
+If you need a ore robust tour addon, there another great options, like [ember-shepherd](https://github.com/rwwagner90/ember-shepherd), [ember-tour](https://github.com/Vestorly/ember-tour) and [ember-introjs](https://github.com/thefrontside/ember-introjs).
+You can also thind many saas that will do the job.
 
 ## Getting started
 
 To start, if you are using Ember CLI, simply run:
 ```bash
-ember install:addon ember-shepherd
+ember install:addon ember-onboard
 ```
 
-After installing, you'll need to include the tour component in the template for the page you would like it on. If you would like it on multiple pages, I would recommend putting it in the application template, so it will be accessible on any route.
+Now you have to create your tours.
+To do this, just create a new `component` extending `onboard-outlet`.
+Next, put your tours and steps inside any function hooked to `init`.
+
+```js
+//components/onboard-outlet.js
+
+import onboardOutlet from 'ember-onboarding/components/onboard-outlet';
+import Ember from 'ember';
+
+export default onboardOutlet.extend({
+  createData: Ember.on('init', function () {
+    var tours = this.get('onboard');
+
+    tours.createStep('step1', 'this is the text for step 1');
+    tours.createStep('step2', 'this is the text for step 2');
+    tours.createStep('step3', 'this is the text for step 3');
+
+    tours.createTour('Basic Tour 1', ['step1', 'step2', 'step3']);
+    tours.createTour('Demo Tour 2', ['step3', 'step2', 'step1']);
+  })
+});
+```
+
+Then you have to identify the html elements that will receive each step.
+By default, `ember-onboarding` attach to an element with the class `'tour-step-' + 'stepName'`.
+In our case, you just have make this changes in your template:
 
 ```hbs
-{{ember-shepherd 
-currentPath=currentPath 
-defaults=shepherdDefaults 
-disableScroll=true
-modal=isModal 
-requiredElements=requiredElements
-start=showHelp 
-steps=steps}}
+//templates/side-bar.hbs
+
+...
+<li class="tour-step-step1">
+  {{#link-to 'step1'}} Got To Step 1{{/link-to}}
+</li>
+<li class="tour-step-step2">
+  {{#link-to 'step2'}} Got To Step 2{{/link-to}}
+</li>
+<li class="tour-step-step3">
+  {{#link-to 'step3'}} Got To Step 3{{/link-to}}
+</li>
+...
 ```
 
-### currentPath
-**currentPath** is used to detect route changes, and cancel the tour when one occurs. If you put the code in your 
-application level template, ```currentPath=currentPath``` is all you need. If you are using it somewhere else, you 
-will need to pass in ```controllerFor('application').get('currentPath')```.
+And you have to put the outlet in your application template:
 
-If you **do not** want the tour to cancel when you switch routes, just do not specify anything for currentPath, but 
-this functionality is not yet supported, so you'll have to do some hacky things.
+```hbs
+//templates/side-bar.hbs
 
-### defaults
-**defaults** is used to set the options that will be applied to each step by default. You can pass in any of the options that you can with Shepherd. It will be an object of a form something like:
-```js
-var shepherdDefaults = 
-{
-  classes: 'shepherd-element shepherd-open shepherd-theme-arrows',
-  scrollTo: false,
-  showCancelLink: true
-};
+...
+{{outlet}}
+
+{{onboard-outlet}}
+..
 ```
 
-### disableScroll
-**disableScroll** is a boolean, that when set to true, will keep the user from scrolling with the scrollbar, 
-mousewheel, arrow keys, etc. You may want to use this to ensure you are driving the scroll position with the tour. 
-Thanks to [jquery-disablescroll](https://github.com/ultrapasty/jquery-disablescroll) for this functionality.
-
-### modal
-**modal** is a boolean, that should be set to true, if you would like the rest of the screen, other than the current element, greyed out, and the current element highlighted. If you do not need modal functionality, you can remove this option or set it to false.
-
-### requiredElements (optional)
-**requiredElements** is an array of objects that indicate DOM elements that are **REQUIRED** by your tour and must 
-exist and be visible for the tour to start. If any elements are not present, it will keep the tour from starting.
-
-You can also specify a message, this message can be used to tell the user what they need to do to make the tour work.
-
-You'll want to do something like this:
-```js
-controllerFor('application').set('requiredElements', [
-      {
-        selector: '.search-result-element',
-        message: 'No search results found. Please execute another search, and try to start the tour again.',
-        title: 'No results'
-      },
-      {
-        selector: '.username-element',
-        message: 'User not logged in, please log in to start this tour.',
-        title: 'Please login'
-      },
-    ]);
-
-```
-
-### start
-**start** should be set to true, when you would like the tour to start. Set it to a variable, and set that variable to true with an action in your Ember app, when you click a button or something, to initiate the tour.
-
-On the demo page, we initiate the tour, supporting both modal, and non-modal, by calling the following actions on the application controller:
+That's it. Now, from any controller, you can activate your `Basic Tour 1`:
 
 ```js
+//controllers/application.js
+...
+onboard: Ember.inject.service(),
+
 actions: {
-    toggleHelpModal: function() {
-      this.set('isModal', true);
-      this.toggleProperty('showHelp');
-    },
-    toggleHelpNonmodal: function() {
-      this.set('isModal', false);
-      this.toggleProperty('showHelp');
-    }
+  startTour1: function () {
+    this.set('onboard.activeTour', 'Basic Tour 1');
+  },
+  startTour1: function () {
+    this.set('onboard.activeTour', 'Demo Tour 2');
   }
+}
 ```
 
-## Installation
+## More Options
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+### Sticky
 
-## Running
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+### Routes Hooks
 
-## Running Tests
 
-* `ember test`
-* `ember test --server`
+### Buttons
 
-## Building
 
-* `ember build`
+### Defaults
 
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+
+### Shepherd Options
+
+
+### Route Changes
+`ember-onboard` does note have any support for route changes.
+You can make it work, but on your on.
+To prevent `js errors`, you can `cancel` the current tour when the route changes.
+There is a `mixin` that can do this for you:
+
+```js
+//app/router.js
+...
+import CancelTour from 'ember-onboarding/mixins/onboard-route';
+
+var Router = Ember.Router.extend(CancelTour, {
+  location: config.locationType
+});
+...
+```
+
+
+### Modal
+There are no support for any kind of `modal` or `shadow`.
+But you can achieve the result you want with css, and you see on shepherd's [demo](http://github.hubspot.com/shepherd/docs/welcome/).
+This is the [css](https://github.com/HubSpot/shepherd/blob/master/docs/welcome/css/welcome.css) file that do this job.
+Remenber that you need to wrap the main `outlet` in 2 elements, `hero-outer` and `hero-inner`.
+Using `z-index` it' possible to achieve the `modal` behavior.
