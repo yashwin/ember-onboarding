@@ -1,6 +1,8 @@
 # Ember-onboarding
 
+#### [Demo](http://thiagoc7.github.io/ember-onboarding/)
 This is another Ember wrapper for the [shepherd](https://github.com/HubSpot/Shepherd), site tour, library.
+
 But, why another? Because I need a tour addon based on same premises:
 * It will be plugged into a (almost) finished project
 * It can't mess up with my beautiful, organised, and fully working code (again, almost!)
@@ -17,7 +19,9 @@ ember install:addon ember-onboard
 ```
 
 Now you have to create your tours.
+
 To do this, just create a new `component` extending `onboard-outlet`.
+
 Next, put your tours and steps inside any function hooked to `init`.
 
 ```js
@@ -41,7 +45,9 @@ export default onboardOutlet.extend({
 ```
 
 Then you have to identify the html elements that will receive each step.
+
 By default, `ember-onboarding` attach to an element with the class `'tour-step-' + 'stepName'`.
+
 In our case, you just have make this changes in your template:
 
 ```hbs
@@ -63,7 +69,7 @@ In our case, you just have make this changes in your template:
 And you have to put the outlet in your application template:
 
 ```hbs
-//templates/side-bar.hbs
+//templates/application.hbs
 
 ...
 {{outlet}}
@@ -92,19 +98,140 @@ actions: {
 ## More Options
 
 ### Sticky
+`ember-onboarding` provide an optional `onboard-sticky` component, that can be used quickly get a help element, like on [gh-pages](http://thiagoc7.github.io/ember-onboarding/). It works with `onboard-list` component, so you have a complete solution.
 
+The `onboard-list` component publish a list from one of 2 fonts (array of strings):
+* `'onboard.currentList'`, that you can set from any route (more on this latter)
+* `'onboard.defaultList'`, that is used when you don' have a `currentList`
+* There is also a `textForNullList` property, to avoid an empty sticky.
+
+In our example, to make `sticky` work is very simple.
+
+```js
+//components/onboard-outlet.js
+
+...
+export default onboardOutlet.extend({
+  createData: Ember.on('init', function () {
+  ...
+  tours.set('defaultList', ['Basic Tour 1', 'Demo Tour 2']);
+
+  })
+});
+```
+
+```hbs
+//templates/application.hbs
+
+...
+{{outlet}}
+
+{{#onboard-outlet}}
+  {{#onboard-sticky}}
+    {{onboard-list}}
+  {{/onboard-sticky}}
+{{/onboard-outlet}}
+...
+```
 
 ### Routes Hooks
+In any `route`, you can import `onboard-route` mixin, and set the `list` for this route, and a `tour` to start with the route.
+
+```js
+//app/routes/dummy-route.js
+...
+import TourHelp from 'ember-onboarding/mixins/onboard-route';
+
+export default Ember.Route.extend(TourHelp, {
+  tourListItems: ['Demo Tour 2', 'Basic Tour 1'],
+  tourStart: 'Demo Tour 2'
+...
+});
+```
 
 
 ### Buttons
+Buttons are built with one of tree functions, `buttonStart`, `buttonMiddle`, `buttonEnd`, defined in this [mixin](https://github.com/thiagoc7/ember-onboarding/blob/master/addon/mixins/onboard-buttons.js).
 
+For now you can't choose one kind of button for each step, but you can override it in your `onboard-outlet` component.
+
+```js
+//components/onboard-outlet.js
+
+...
+export default onboardOutlet.extend({
+  createData: Ember.on('init', function () {
+  ...
+  }),
+  
+  buttonMiddle: function (tour) {
+      return [
+        {
+          classes: 'shepherd-button-primary',
+          text: 'Cancel',
+          action: tour.cancel
+        },
+        {
+          text: 'Next',
+          action: tour.next
+        }
+      ];
+    },
+});
+```
 
 ### Defaults
+You can change the defaults of the `onboard service` **before** creating your tours, in your  `onboard-outlet` component.
 
+```js
+//components/onboard-outlet.js
+
+...
+export default onboardOutlet.extend({
+  createData: Ember.on('init', function () {
+    var tours = this.get('onboard');
+    
+    tours.set('classes', 'shepherd-theme-dark'); //remember to import css from shepherd.js
+    tours.set('scrollTo', true);
+    tours.set('showCancelLink', false);
+    tours.set('attachToSlug', '.tour-step-1234-');
+  
+    tours.createStep('step1', 'this is the text for step 1');
+  ...
+  })
+});
+```
 
 ### Shepherd Options
+You can use all [shepherd](http://github.hubspot.com/shepherd/) options when creating the steps and the tours (exept for buttons).
 
+* When creating a `stp`, pass an object as the 2. argument
+* When creating a `tour`, pass an object as the 3. argument
+
+```js
+//components/onboard-outlet.js
+
+...
+export default onboardOutlet.extend({
+  createData: Ember.on('init', function () {
+    var tours = this.get('onboard');
+    
+    tours.createStep('followup', {
+      title: 'Learn more',
+      text: 'Bla Bla Bla Bla',
+      attachTo: '.hero-including bottom'
+    });
+        
+    tours.createTour('Basic Features',
+      ['records', 'transactions', 'reports', 'dashboard'],
+      { classes: 'shepherd-theme-custom' }
+    );
+  ...
+  })
+});
+```
+
+When a tour is active, you can allways get the object with `injections`, using `this.get('onboard.tourObj')`.
 
 ### Route Changes
 `ember-onboard` does note have any support for route changes.
@@ -115,14 +242,13 @@ There is a `mixin` that can do this for you:
 ```js
 //app/router.js
 ...
-import CancelTour from 'ember-onboarding/mixins/onboard-route';
+import CancelTour from 'ember-onboarding/mixins/onboard-router';
 
 var Router = Ember.Router.extend(CancelTour, {
   location: config.locationType
 });
 ...
 ```
-
 
 ### Modal
 There are no support for any kind of `modal` or `shadow`.
