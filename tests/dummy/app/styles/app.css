@@ -106,7 +106,7 @@
   -ms-transform-origin: 25px 25px;
   transform-origin: 25px 25px;
   alignment-baseline: baseline;
-  background: url('/images/icon-help-circled.svg') no-repeat scroll 50% 50%/56px;
+  background: url('/ember-onboarding/images/icon-help-circled.svg') no-repeat scroll 50% 50%/56px;
   border: 1px solid #0b0b0b;
   border-radius: 50% 50% 50% 50%;
   outline: transparent none 0px;
