@@ -9,7 +9,7 @@ But, why another? Because I need a tour addon based on same premises:
 * I don't need all the options that the [library](https://github.com/HubSpot/Shepherd) gives me, so the addon can be more simple, opinated.
 
 If you need a ore robust tour addon, there another great options, like [ember-shepherd](https://github.com/rwwagner90/ember-shepherd), [ember-tour](https://github.com/Vestorly/ember-tour) and [ember-introjs](https://github.com/thefrontside/ember-introjs).
-You can also thind many saas that will do the job.
+You can also find many saas that will do the job.
 
 ## Getting started
 
@@ -98,14 +98,14 @@ actions: {
 ## More Options
 
 ### Sticky
-`ember-onboarding` provide an optional `onboard-sticky` component, that can be used quickly get a help element, like on [gh-pages](http://thiagoc7.github.io/ember-onboarding/). It works with `onboard-list` component, so you have a complete solution.
+`ember-onboarding` provides an optional `onboard-sticky` component, that can be used to quickly get a help element, like on [gh-pages](http://thiagoc7.github.io/ember-onboarding/). It works with `onboard-list` component, so you have a complete solution.
 
 The `onboard-list` component publish a list from one of 2 fonts (array of strings):
 * `'onboard.currentList'`, that you can set from any route (more on this latter)
 * `'onboard.defaultList'`, that is used when you don' have a `currentList`
 * There is also a `textForNullList` property, to avoid an empty sticky.
 
-In our example, to make `sticky` work is very simple.
+In our example, to make `sticky` works is very simple.
 
 ```js
 //components/onboard-outlet.js
@@ -135,7 +135,7 @@ export default onboardOutlet.extend({
 ```
 
 ### Routes Hooks
-In any `route`, you can import `onboard-route` mixin, and set the `list` for this route, and a `tour` to start with the route.
+In any `route`, you can import `onboard-route` mixin, set the `list` for this route, and a `tour` to start with the route.
 
 ```js
 //app/routes/dummy-route.js
@@ -205,7 +205,7 @@ export default onboardOutlet.extend({
 ### Shepherd Options
 You can use all [shepherd](http://github.hubspot.com/shepherd/) options when creating the steps and the tours (exept for buttons).
 
-* When creating a `stp`, pass an object as the 2. argument
+* When creating a `step`, pass an object as the 2. argument
 * When creating a `tour`, pass an object as the 3. argument
 
 ```js
@@ -234,8 +234,8 @@ export default onboardOutlet.extend({
 When a tour is active, you can allways get the object with `injections`, using `this.get('onboard.tourObj')`.
 
 ### Route Changes
-`ember-onboard` does note have any support for route changes.
-You can make it work, but on your on.
+`ember-onboard` does not have any support for route changes.
+You can make it work, but on your own.
 To prevent `js errors`, you can `cancel` the current tour when the route changes.
 There is a `mixin` that can do this for you:
 
@@ -252,7 +252,9 @@ var Router = Ember.Router.extend(CancelTour, {
 
 ### Modal
 There are no support for any kind of `modal` or `shadow`.
-But you can achieve the result you want with css, and you see on shepherd's [demo](http://github.hubspot.com/shepherd/docs/welcome/).
+But you can achieve the result you want with css, as you see on shepherd's [demo](http://github.hubspot.com/shepherd/docs/welcome/).
+
 This is the [css](https://github.com/HubSpot/shepherd/blob/master/docs/welcome/css/welcome.css) file that do this job.
 Remenber that you need to wrap the main `outlet` in 2 elements, `hero-outer` and `hero-inner`.
-Using `z-index` it' possible to achieve the `modal` behavior.
+
+Using `z-index` it's possible to achieve the `modal` behavior.
