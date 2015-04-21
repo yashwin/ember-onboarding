@@ -89,7 +89,7 @@ actions: {
   startTour1: function () {
     this.set('onboard.activeTour', 'Basic Tour 1');
   },
-  startTour1: function () {
+  startTour2: function () {
     this.set('onboard.activeTour', 'Demo Tour 2');
   }
 }
