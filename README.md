@@ -13,7 +13,12 @@ You can also find many saas that will do the job.
 
 ## Getting started
 
-To start, if you are using Ember CLI, simply run:
+For Ember CLI >= 0.2.3:
+```bash
+ember install ember-onboarding
+```
+
+For Ember CLI < 0.2.3
 ```bash
 ember install:addon ember-onboard
 ```
