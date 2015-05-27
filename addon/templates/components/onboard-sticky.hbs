@@ -1,23 +1,18 @@
-{{#if isOpen}}
-  <div class="sticky-wrapper">
+<div {{bind-attr class=":sticky-wrapper isOpen::hidden"}}>
 
-    <div class="sticky-pane">
+  <div class="sticky-pane">
 
-      <button class="sticky-close" {{action 'toggleOpen'}}>
-        ×
-      </button>
+    <button class="sticky-close" {{action 'toggleOpen'}}>
+      ×
+    </button>
 
-      {{yield}}
-
-    </div>
+    {{yield}}
 
   </div>
-{{/if}}
 
-{{#unless isOpen}}
-  <div class="sticky-button-wrapper">
-    <div class="sticky-button" {{action 'toggleOpen'}}>
-    </div>
+</div>
+
+<div {{bind-attr class=":sticky-button-wrapper isOpen:hidden"}}>
+  <div class="sticky-button" {{action 'toggleOpen'}}>
   </div>
-{{/unless}}
-
+</div>
