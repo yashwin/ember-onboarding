@@ -12,7 +12,7 @@
 
 </div>
 
-<div {{bind-attr class=":sticky-button-wrapper isOpen:hidden"}}>
+<div class="sticky-button-wrapper {{if isOpen 'hidden'}}">
   <div class="sticky-button" {{action 'toggleOpen'}}>
   </div>
 </div>
