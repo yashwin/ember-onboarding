@@ -37,7 +37,7 @@
     "tour"
   ],
   "dependencies": {
-    "ember-cli-htmlbars": "0.7.4",
+    "ember-cli-htmlbars": "1.1.1",
     "ember-cli-babel": "^5.0.0"
   },
   "ember-addon": {
