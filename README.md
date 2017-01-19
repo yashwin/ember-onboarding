@@ -1,6 +1,6 @@
 # Ember-onboarding
 
-#### [Demo](http://thiagoc7.github.io/ember-onboarding/)
+#### [Demo](http://yashwin.github.io/ember-onboarding/)
 This is another Ember wrapper for the [shepherd](https://github.com/HubSpot/Shepherd), site tour, library.
 
 But, why another? Because I need a tour addon based on same premises:
@@ -103,7 +103,7 @@ actions: {
 ## More Options
 
 ### Sticky
-`ember-onboarding` provides an optional `onboard-sticky` component, that can be used to quickly get a help element, like on [gh-pages](http://thiagoc7.github.io/ember-onboarding/). It works with `onboard-list` component, so you have a complete solution.
+`ember-onboarding` provides an optional `onboard-sticky` component, that can be used to quickly get a help element, like on [gh-pages](http://yashwin.github.io/ember-onboarding/). It works with `onboard-list` component, so you have a complete solution.
 
 The `onboard-list` component publish a list from one of 2 fonts (array of strings):
 * `'onboard.currentList'`, that you can set from any route (more on this latter)
@@ -156,7 +156,7 @@ export default Ember.Route.extend(TourHelp, {
 
 
 ### Buttons
-Buttons are built with one of tree functions, `buttonStart`, `buttonMiddle`, `buttonEnd`, defined in this [mixin](https://github.com/thiagoc7/ember-onboarding/blob/master/addon/mixins/onboard-buttons.js).
+Buttons are built with one of tree functions, `buttonStart`, `buttonMiddle`, `buttonEnd`, defined in this [mixin](https://github.com/yashwin/ember-onboarding/blob/master/addon/mixins/onboard-buttons.js).
 
 For now you can't choose one kind of button for each step, but you can override it in your `onboard-outlet` component.
 
