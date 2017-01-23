@@ -1,6 +1,6 @@
 {
   "name": "ember-onboarding",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Easy build tour inside Ember apps",
   "directories": {
     "doc": "doc",
